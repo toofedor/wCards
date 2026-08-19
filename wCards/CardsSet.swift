@@ -6,9 +6,13 @@
 //
 
 import Foundation
+import Observation
+import SwiftUI
+import Combine
 
-class CardsSet: Identifiable, Codable, CustomStringConvertible, Comparable, Equatable {
+@Observable class CardsSet: ObservableObject, Identifiable, Codable, CustomStringConvertible, Comparable, Equatable {
   var name: String
+  var langID: Language.ID
   var setOfCards: [Card]
   var id: UUID
   
@@ -16,8 +20,9 @@ class CardsSet: Identifiable, Codable, CustomStringConvertible, Comparable, Equa
     return setOfCards.allSatisfy { $0.progressStatus.rawValue > 2 }
   }
   
-  init(name: String = "English greetings", setOfCards: [Card] = [Card()], id: UUID = UUID()) {
+  init(name: String = "Greetings", langID: Language.ID = UUID(), setOfCards: [Card] = [Card()], id: UUID = UUID()) {
     self.name = name
+    self.langID = langID
     self.id = id
     self.setOfCards = setOfCards
   }
@@ -25,6 +30,12 @@ class CardsSet: Identifiable, Codable, CustomStringConvertible, Comparable, Equa
   func card(ID: UUID?) -> Card? {
     return setOfCards.first(where: {$0.id == ID})
   }
+  
+  func newCard() {
+    setOfCards.append(Card(word: "", setID: self.id))
+  }
+  
+  
   
   var description: String {
     "Set Of Cards \"\(name)\" with \(setOfCards.count) word\(setOfCards.count == 1 ? "" : "s")"

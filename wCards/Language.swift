@@ -6,8 +6,11 @@
 //
 
 import Foundation
+import Observation
+import SwiftUI
+import Combine
 
-class Language: Identifiable, Codable, CustomStringConvertible {
+@Observable class Language: ObservableObject, Identifiable, Codable, CustomStringConvertible {
   var name: String
   var sets: [CardsSet]
   var id: UUID
@@ -21,6 +24,10 @@ class Language: Identifiable, Codable, CustomStringConvertible {
   
   func set(ID: UUID?) -> CardsSet? {
     return sets.first(where: {$0.id == ID})
+  }
+  
+  func newSet() {
+    sets.append(CardsSet(name: "", langID: self.id))
   }
   
   var description: String {

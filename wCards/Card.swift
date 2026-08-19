@@ -6,11 +6,15 @@
 //
 
 import Foundation
+import Observation
+import SwiftUI
+import Combine
 
-class Card: Identifiable, Codable, CustomStringConvertible, Comparable, Equatable {
+@Observable class Card: ObservableObject, Identifiable, Codable, CustomStringConvertible, Comparable, Equatable {
   
   var languageStuding: String
   var languageNative: String
+  var setID: CardsSet.ID
   var word: String
   var translation: String
   var progressForward: Double
@@ -18,8 +22,9 @@ class Card: Identifiable, Codable, CustomStringConvertible, Comparable, Equatabl
   var progressStatus: ProgressStatus
   var id: UUID
   
-  init(languageStuding: String = "English", languageNative: String = "Russian", word: String = "Hellow", translation: String = "Привет", progressForward: Double = 0, progressBackward: Double = 0, progressStatus: ProgressStatus = .unknown, id: UUID = UUID()) {
+  init(languageStuding: String = "English", languageNative: String = "Russian", word: String = "Hellow", translation: String = "Привет", setID: CardsSet.ID = UUID(), progressForward: Double = 0, progressBackward: Double = 0, progressStatus: ProgressStatus = .unknown, id: UUID = UUID()) {
     self.id = id
+    self.setID = setID
     self.languageStuding = languageStuding
     self.languageNative = languageNative
     self.word = word

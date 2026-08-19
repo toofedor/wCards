@@ -6,8 +6,11 @@
 //
 
 import Foundation
+import Observation
+import SwiftUI
+import Combine
 
-class AllLanguages: Identifiable, Codable, CustomStringConvertible {
+@Observable class AllLanguages: ObservableObject, Identifiable, Codable, CustomStringConvertible {
   var name: String
   var langs: [Language]
   var id: UUID
@@ -27,5 +30,9 @@ class AllLanguages: Identifiable, Codable, CustomStringConvertible {
     let lang = langs.first(where: {$0.id == ID})
     print(lang?.description ?? "no lang found")
     return langs.first(where: {$0.id == ID})
+  }
+  
+  func newLang() {
+    langs.append(Language(name: ""))
   }
 }
