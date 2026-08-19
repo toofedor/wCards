@@ -6,17 +6,26 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		C4673115303528390077656F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4673112303528390077656F /* ContentView.swift */; };
+		C4673116303528390077656F /* wCardsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4673113303528390077656F /* wCardsApp.swift */; };
+		C4673117303528390077656F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4673111303528390077656F /* Assets.xcassets */; };
+		C4673119303528700077656F /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4673118303528700077656F /* Card.swift */; };
+		C467311B30352DEA0077656F /* CardsSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C467311A30352DEA0077656F /* CardsSet.swift */; };
+		C467311D303533D90077656F /* AllLanguages.swift in Sources */ = {isa = PBXBuildFile; fileRef = C467311C303533D90077656F /* AllLanguages.swift */; };
+		C467311F30353DAD0077656F /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = C467311E30353DAD0077656F /* Language.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		C46731033035282D0077656F /* wCards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wCards.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4673111303528390077656F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C4673112303528390077656F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C4673113303528390077656F /* wCardsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wCardsApp.swift; sourceTree = "<group>"; };
+		C4673118303528700077656F /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		C467311A30352DEA0077656F /* CardsSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsSet.swift; sourceTree = "<group>"; };
+		C467311C303533D90077656F /* AllLanguages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllLanguages.swift; sourceTree = "<group>"; };
+		C467311E30353DAD0077656F /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		C46731053035282D0077656F /* wCards */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = wCards;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		C46731003035282D0077656F /* Frameworks */ = {
@@ -32,7 +41,7 @@
 		C46730FA3035282D0077656F = {
 			isa = PBXGroup;
 			children = (
-				C46731053035282D0077656F /* wCards */,
+				C4673114303528390077656F /* wCards */,
 				C46731043035282D0077656F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +52,20 @@
 				C46731033035282D0077656F /* wCards.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		C4673114303528390077656F /* wCards */ = {
+			isa = PBXGroup;
+			children = (
+				C4673111303528390077656F /* Assets.xcassets */,
+				C4673113303528390077656F /* wCardsApp.swift */,
+				C4673118303528700077656F /* Card.swift */,
+				C467311A30352DEA0077656F /* CardsSet.swift */,
+				C467311E30353DAD0077656F /* Language.swift */,
+				C467311C303533D90077656F /* AllLanguages.swift */,
+				C4673112303528390077656F /* ContentView.swift */,
+			);
+			path = wCards;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -59,9 +82,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				C46731053035282D0077656F /* wCards */,
 			);
 			name = wCards;
 			packageProductDependencies = (
@@ -109,6 +129,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4673117303528390077656F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,6 +140,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4673115303528390077656F /* ContentView.swift in Sources */,
+				C4673119303528700077656F /* Card.swift in Sources */,
+				C467311D303533D90077656F /* AllLanguages.swift in Sources */,
+				C467311F30353DAD0077656F /* Language.swift in Sources */,
+				C4673116303528390077656F /* wCardsApp.swift in Sources */,
+				C467311B30352DEA0077656F /* CardsSet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
