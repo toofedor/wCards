@@ -8,19 +8,20 @@
 import SwiftUI
 
 struct FlipCardView: View {
+  @EnvironmentObject var allLangs: AllLanguages
   @StateObject var cardManager = CardManager()
+  @State var card: Card
     var body: some View {
       ZStack {
-        FrontCardView(isFlipped: cardManager.isFlipped, angle: cardManager.rotationAngle, word: "Come")
-        BackCardView(isFlipped: cardManager.isFlipped, angle: cardManager.rotationAngle, word: "Приходить")
+        FrontCardView(isFlipped: card.flipped, isBackSideShown: cardManager.isBackSideShown, angle: cardManager.rotationAngle, word: card.word)
+        BackCardView(isFlipped: card.flipped, isBackSideShown: cardManager.isBackSideShown, angle: cardManager.rotationAngle, word: card.translation)
       }
-      .frame(width: 300, height: 150)
       .onTapGesture {
-        cardManager.flipCard()
+        cardManager.flipCardBouncy()
       }
     }
 }
 
 #Preview {
-    FlipCardView()
+  FlipCardView(card: Card())
 }

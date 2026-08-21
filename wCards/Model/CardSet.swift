@@ -10,7 +10,7 @@ import Observation
 import SwiftUI
 import Combine
 
-@Observable class CardsSet: ObservableObject, Identifiable, Codable, CustomStringConvertible, Comparable, Equatable, Hashable, Sendable {
+@Observable class CardSet: ObservableObject, Identifiable, Codable, CustomStringConvertible, Comparable, Equatable, Hashable, Sendable {
   var name: String
   var langID: Language.ID
   var setOfCards: [Card]
@@ -31,8 +31,12 @@ import Combine
     return setOfCards.first(where: {$0.id == ID})
   }
   
+  func index(card: Card) -> Int {
+    return setOfCards.firstIndex(where: {$0.id == card.id}) ?? 0
+  }
+  
   func newCard() {
-    setOfCards.append(Card(word: "", setID: self.id))
+    setOfCards.append(Card(word: "", translation: "", setID: self.id))
   }
   
   
@@ -41,11 +45,11 @@ import Combine
     "Set Of Cards \"\(name)\" with \(setOfCards.count) word\(setOfCards.count == 1 ? "" : "s")"
   }
   
-  static func < (lhs: CardsSet, rhs: CardsSet) -> Bool {
+  static func < (lhs: CardSet, rhs: CardSet) -> Bool {
     lhs.name < rhs.name
   }
   
-  static func == (lhs: CardsSet, rhs: CardsSet) -> Bool {
+  static func == (lhs: CardSet, rhs: CardSet) -> Bool {
     guard lhs.setOfCards.count == rhs.setOfCards.count else { return false }
     let lCards = lhs.setOfCards.sorted()
     let rCards = lhs.setOfCards.sorted()

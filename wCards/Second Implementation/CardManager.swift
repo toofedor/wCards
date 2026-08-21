@@ -13,12 +13,15 @@ class CardManager: ObservableObject {
   @Published var isFlipped: Bool = false
   @Published var isBackSideShown: Bool = false
   @Published var rotationAngle: Double = 0
-  
-  func flipCard() {
-    withAnimation { 
+  let duration: Double = 0.5
+  func flipCardBouncy() {
+    withAnimation(.bouncy(duration: duration)) { 
       isFlipped.toggle()
-      isBackSideShown.toggle()
       rotationAngle += 180
+    }
+    Task {
+      try? await Task.sleep(for: .seconds(duration / 4.6))
+      isBackSideShown.toggle()
     }
   }
 }

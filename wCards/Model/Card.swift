@@ -14,16 +14,25 @@ import Combine
   
   var languageStuding: String
   var languageNative: String
-  var setID: CardsSet.ID
+  var setID: CardSet.ID
   var word: String
   var translation: String
   var progressForward: Double
   var progressBackward: Double
   var progressStatus: ProgressStatus
+  var flipped: Bool = false
   var id: UUID
   
-  init(languageStuding: String = "English", languageNative: String = "Russian", word: String = "Hellow", translation: String = "Привет", setID: CardsSet.ID = UUID(), progressForward: Double = 0, progressBackward: Double = 0, progressStatus: ProgressStatus = .unknown, id: UUID = UUID()) {
-    self.id = id
+  init(languageStuding: String = "English",
+       languageNative: String = "Russian",
+       word: String = "Hellow",
+       translation: String = "Привет",
+       setID: CardSet.ID = UUID(),
+       progressForward: Double = 0,
+       progressBackward: Double = 0,
+       progressStatus: ProgressStatus = .unknown,
+       id: UUID = UUID()
+  ) {
     self.setID = setID
     self.languageStuding = languageStuding
     self.languageNative = languageNative
@@ -32,11 +41,11 @@ import Combine
     self.progressForward = progressForward
     self.progressBackward = progressBackward
     self.progressStatus = progressStatus
+    self.id = id
   }
   
-  
   var description: String {
-    "\(languageStuding) / \(languageNative)"
+    "\(word) / \(translation)"
   }
   
   static func < (lhs: Card, rhs: Card) -> Bool {

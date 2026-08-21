@@ -15,6 +15,10 @@ import Combine
   var langs: [Language]
   var id: UUID
   
+  var langID: Language.ID?
+  var setID: CardSet.ID?
+  var wordID: Card.ID?
+  
   init(name: String = "", langs: [Language] = [Language(name: "English")], id: UUID = UUID()) {
     self.name = name
     self.id = id

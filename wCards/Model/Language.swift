@@ -12,22 +12,22 @@ import Combine
 
 @Observable class Language: ObservableObject, Identifiable, Codable, CustomStringConvertible, Equatable, Hashable, Sendable {
   var name: String
-  var sets: [CardsSet]
+  var sets: [CardSet]
   var id: UUID
   
-  init(name: String, sets: [CardsSet] = [CardsSet()], id: UUID = UUID()) {
+  init(name: String, sets: [CardSet] = [CardSet()], id: UUID = UUID()) {
     self.name = name
     self.id = id
     self.sets = sets
     print(description)
   }
   
-  func set(ID: UUID?) -> CardsSet? {
+  func set(ID: UUID?) -> CardSet? {
     return sets.first(where: {$0.id == ID})
   }
   
   func newSet() {
-    sets.append(CardsSet(name: "", langID: self.id))
+    sets.append(CardSet(name: "", langID: self.id))
   }
   
   var description: String {
