@@ -10,7 +10,7 @@ import Observation
 import SwiftUI
 import Combine
 
-@Observable class CardsSet: ObservableObject, Identifiable, Codable, CustomStringConvertible, Comparable, Equatable {
+@Observable class CardsSet: ObservableObject, Identifiable, Codable, CustomStringConvertible, Comparable, Equatable, Hashable, Sendable {
   var name: String
   var langID: Language.ID
   var setOfCards: [Card]
@@ -53,5 +53,9 @@ import Combine
       guard lCards[n] == rCards[n] else { return false }
     }
     return true
+  }
+  
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
   }
 }

@@ -21,8 +21,8 @@ import Combine
     self.langs = langs
   }
   
-  var description: String {
-    "AllLanguages \"\(name)\" with \(langs.count) set\(langs.count == 1 ? "" : "s")"
+  func newLang() {
+    langs.append(Language(name: "\(langs.count)"))
   }
   
   func lang(ID: UUID?) -> Language? {
@@ -30,9 +30,18 @@ import Combine
     let lang = langs.first(where: {$0.id == ID})
     print(lang?.description ?? "no lang found")
     return langs.first(where: {$0.id == ID})
+  }  
+
+  var description: String {
+    "AllLanguages \"\(name)\" with \(langs.count) set\(langs.count == 1 ? "" : "s")"
   }
   
-  func newLang() {
-    langs.append(Language(name: ""))
+  static func == (lhs: AllLanguages, rhs: AllLanguages) -> Bool {
+    lhs.id == rhs.id
   }
+
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
+  }
+  
 }

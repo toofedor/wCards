@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct LangsSetsCards: View {
   @State var allLangs: AllLanguages = AllLanguages()
   @State var langID: Language.ID?
   @State var setID: CardsSet.ID?
@@ -131,5 +131,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    LangsSetsCards()
 }
