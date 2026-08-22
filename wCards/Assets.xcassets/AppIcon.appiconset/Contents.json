@@ -1,6 +1,7 @@
 {
   "images" : [
     {
+      "filename" : "wCards_Br_Any.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -12,6 +13,7 @@
           "value" : "dark"
         }
       ],
+      "filename" : "wCards_Br_Dark.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -23,6 +25,7 @@
           "value" : "tinted"
         }
       ],
+      "filename" : "wCards_Br_Tinted.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"

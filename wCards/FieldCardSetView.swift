@@ -9,18 +9,17 @@ import SwiftUI
 
 struct FieldInListView: View {
   @EnvironmentObject var allLangs: AllLanguages
-  @State var card: Card
+  @State var cardSet: CardSet
   
   var body: some View {
     HStack {
-      TextField("Word", text: $card.word)
-      TextField("Translation", text: $card.translation)
+      TextField("Category", text: $cardSet.name)
     }
     
   }
 }
 
 #Preview {
-  @Previewable @State var card = Card(word: "1234", translation: "56789")
-  FieldInListView(card: card)
+  @Previewable @State var cardSet = CardSet()
+  FieldInListView(cardSet: cardSet)
 }
