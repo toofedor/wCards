@@ -122,7 +122,9 @@ struct LangsSetsCards: View {
                 }
               } label: {
                 Image(systemName: "plus")
-              } primaryAction: {}
+              } primaryAction: {
+                language.newSet(5)
+                changingSet = true}
               .onTapGesture {
                 language.newSet(5)
                 changingSet = true
@@ -200,7 +202,9 @@ struct LangsSetsCards: View {
                       .font(.system(.caption2, design: .default, weight: .bold))
                       .offset(x: 11, y: -11)
                   }
-                } primaryAction: {}
+                } primaryAction: {
+                  cardSet = set.filtCards()
+                  showStack.toggle()}
                 .onTapGesture {
                   cardSet = set.filtCards()
                   showStack.toggle()
@@ -257,7 +261,9 @@ struct LangsSetsCards: View {
                   }
                 } label: {
                   Image(systemName: "arrow.up.and.down")
-                } primaryAction: {}
+                } primaryAction: {
+                  set.setOfCards.sort(by: { $0.word < $1.word })
+                  toggleList.toggle()}
                 .onTapGesture {
                   set.setOfCards.sort(by: { $0.word < $1.word })
                   toggleList.toggle()
@@ -340,7 +346,8 @@ struct LangsSetsCards: View {
                   Label("Menu", systemImage: "gear")
                 } label: {
                   Image(systemName: "plus")
-                } primaryAction: {}
+                } primaryAction: {
+                  set.newCard()}
                 .onTapGesture {
                   set.newCard()
                 }
