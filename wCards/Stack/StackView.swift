@@ -8,45 +8,87 @@
 import SwiftUI
 
 struct StackView: View {
-  @EnvironmentObject var allLangs: AllLanguages
   @Binding var cardSet: CardSet
 
   @State private var dragOffset: CGSize = .zero
   @State private var topCardIndex: Int = 0
-  @State var refresh: Bool = false
-  var width: CGFloat = 300
+  @State private var len: Int = 1
+  @State private var shiftFactor: Double = 1
+  var width: CGFloat = 350
 
   var body: some View {
     ZStack {
       ForEach(cardSet.setOfCards, id: \.id) { card in
-        cardView(card, at: cardSet.index(card: card))
+        cardView(card)
       }
       .padding()
-      
+      VStack{
+        Spacer()
+        HStack(alignment: .bottom) {
+          Button {
+            flipCards(direction: .up)
+          } label: {
+            Image(systemName: "arrow.uturn.up.square")
+            Text("Face Up")
+          }
+          .buttonStyle(.glassProminent)
+          Button {
+            flipCards(direction: .down)
+          } label: {
+            Image(systemName: "arrow.uturn.down.square")
+            Text("Face Down")
+          }
+          .buttonStyle(.glassProminent)
+        }
+        .font(.title2)
       }
-    .background{
-//      Color.black
+    }
+    .background {
       Text(cardSet.name)
         .lineLimit(1)
-        .font(.system(size: 240, weight: .black, design: .serif))
+        .font(.system(size: 1500 / Double(cardSet.name.count), weight: .black, design: .serif))
         .foregroundStyle(.gray.gradient.quaternary)
         .frame(width: 2000, height: 1000)
         .rotationEffect(.degrees(-70))
-        
     }
-    .onChange(of: cardSet.name) { oldValue, newValue in
-      refresh.toggle()
+    .onAppear {
+      len = cardSet.setOfCards.count
+      shiftFactor = 0.2 + 3.5/Double(len)
     }
+  }
+  
+  
+  func flipCards(direction: Direction) {
+    let n = cardSet.setOfCards.count { $0.flipped == (direction == .up) }
+    guard n != 0 else { return }
+    let nanoSec: UInt64 = 400_000_000 / UInt64(n)
+    
+    Task {
+      do {
+        for card in [topCardIndex..<cardSet.setOfCards.count, 0..<topCardIndex].joined() {
+          if cardSet.setOfCards[card].flipped == (direction == .up)  {
+            cardSet.setOfCards[card].flipped.toggle()
+            try await Task.sleep(nanoseconds: nanoSec)
+          }
+        }
+      } catch {
+      }
+    }
+  }
+  enum Direction {
+    case up
+    case down
   }
 
   @ViewBuilder
-  private func cardView(_ card: Card, at index: Int) -> some View {
-    let visualIndex = (index - topCardIndex + cardSet.setOfCards.count) % cardSet.setOfCards.count
+  private func cardView(_ card: Card) -> some View {
+    let index = cardSet.index(card: card)
+    let visualIndex = (index - topCardIndex + len) % len
     let progress = min(abs(dragOffset.width) / 150, 1)
     let signedProgress = (dragOffset.width >= 0 ? 1 : -1) * progress
 
     FlipCardView(card: card)
-      .frame(width: width, height: 150)
+      .frame(width: width, height: 175)
       .offset(
         x: offsetFor(visualIndex: visualIndex, dragOffset: dragOffset.width),
         y: yOffsetFor(visualIndex: visualIndex)
@@ -77,7 +119,7 @@ struct StackView: View {
   }
 
   private func rotationFor(visualIndex: Int, progress: Double) -> Double {
-    visualIndex == 0 ? 0 : (Double(visualIndex) - progress) * 5.0
+    visualIndex == 0 ? 0 : (Double(visualIndex) - progress) * 15.0 * shiftFactor
   }
 
   private func scaleFor(visualIndex: Int, progress: Double) -> CGFloat {
@@ -87,16 +129,16 @@ struct StackView: View {
     case 1:
       return 1.0 - (Double(visualIndex) + progress) * 0.06
     default:
-      return 1.0 - Double(visualIndex) * 0.06
+      return 1.0 - Double(visualIndex) * 0.06 * (shiftFactor + 0.3)
     }
   }
 
   private func offsetXBackFor(visualIndex: Int) -> CGFloat {
-    visualIndex == 0 ? 0 : Double(visualIndex) * 10
+    visualIndex == 0 ? 0 : Double(visualIndex) * 10 * shiftFactor
   }
 
   private func rotation3DFor(visualIndex: Int, signedProgress: Double) -> Double {
-    20.0 * signedProgress * (1.0 - (Double(visualIndex) + signedProgress) * 0.1)
+    20.0 * signedProgress * (1.0 - (Double(visualIndex) + signedProgress) * 0.1) 
   }
 
   // MARK: - Gesture
@@ -119,7 +161,7 @@ struct StackView: View {
       let delay: Double = direction == -1 ? 0.18 : 0.20
 
       withAnimation(.smooth(duration: delay)) {
-        dragOffset.width = direction < 0 ? -width * 1.05 : width
+        dragOffset.width = direction < 0 ? -width * 1.15 : width
       } completion: {
         withAnimation(.smooth(duration: 0.5)) {
           topCardIndex = (topCardIndex + 1) % cardSet.setOfCards.count
@@ -136,13 +178,30 @@ struct StackView: View {
 
 #Preview {
   @Previewable @State var stack = CardSet(
-    name: "Animals", setOfCards: [
+    name: "Местоимения", setOfCards: [
       Card(word: "Cat", translation: "Кот"), 
-      Card(word: "Dog", translation: "Собака"), 
-      Card(word: "Mouse", translation: "Мышь"), 
-      Card(word: "Bat", translation: "Летучая мышь"), 
+      Card(word: "Dog", translation: "Собака"),
+      Card(word: "Mouse", translation: "Мышь"),
+      Card(word: "Bat", translation: "Летучая мышь"),
+      Card(word: "Snake", translation: "Змея")
+      ,
+      Card(word: "Cat", translation: "Кот"), 
+      Card(word: "Dog", translation: "Собака"),
+      Card(word: "Mouse", translation: "Мышь"),
+      Card(word: "Bat", translation: "Летучая мышь"),
+      Card(word: "Snake", translation: "Змея"),
+      Card(word: "Cat", translation: "Кот"), 
+      Card(word: "Dog", translation: "Собака"),
+      Card(word: "Mouse", translation: "Мышь"),
+      Card(word: "Bat", translation: "Летучая мышь"),
+      Card(word: "Snake", translation: "Змея"),
+      Card(word: "Cat", translation: "Кот"), 
+      Card(word: "Dog", translation: "Собака"),
+      Card(word: "Mouse", translation: "Мышь"),
+      Card(word: "Bat", translation: "Летучая мышь"),
       Card(word: "Snake", translation: "Змея")
     ]
   )
   StackView(cardSet: $stack)
+    .environmentObject(DataLangs())
 }

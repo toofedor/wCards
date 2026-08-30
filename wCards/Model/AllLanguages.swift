@@ -26,15 +26,31 @@ import Combine
   }
   
   func newLang() {
-    langs.append(Language(name: "\(langs.count)"))
+    langs.append(Language(name: ""))
   }
   
   func lang(ID: UUID?) -> Language? {
-    print("lang(ID = \(ID?.uuidString ?? "nil")")
-    let lang = langs.first(where: {$0.id == ID})
-    print(lang?.description ?? "no lang found")
+//    print("lang(ID = \(ID?.uuidString ?? "nil")")
+//    let lang = langs.first(where: {$0.id == ID})
+//    print(lang?.description ?? "no lang found")
     return langs.first(where: {$0.id == ID})
-  }  
+  }
+  
+  func findSet(ID: UUID?) -> CardSet? {
+    guard ID != nil else { return nil }
+    for lang in langs {
+      for set in lang.sets {
+        if set.id == ID {
+          return set
+        }
+      }
+    }
+    return nil
+  }
+  
+  func langInd(ID: UUID?) -> Int {
+    return langs.firstIndex(where: {$0.id == ID}) ?? 0
+  } 
 
   var description: String {
     "AllLanguages \"\(name)\" with \(langs.count) set\(langs.count == 1 ? "" : "s")"

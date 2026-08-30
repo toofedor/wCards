@@ -21,16 +21,18 @@ import Combine
   var progressBackward: Double
   var progressStatus: ProgressStatus
   var flipped: Bool = false
+  var pointed: Bool
   var id: UUID
   
   init(languageStuding: String = "English",
        languageNative: String = "Russian",
-       word: String = "Hellow",
-       translation: String = "Привет",
+       word: String = "",
+       translation: String = "",
        setID: CardSet.ID = UUID(),
        progressForward: Double = 0,
        progressBackward: Double = 0,
        progressStatus: ProgressStatus = .unknown,
+       pointed: Bool = true,
        id: UUID = UUID()
   ) {
     self.setID = setID
@@ -41,6 +43,7 @@ import Combine
     self.progressForward = progressForward
     self.progressBackward = progressBackward
     self.progressStatus = progressStatus
+    self.pointed = pointed
     self.id = id
   }
   

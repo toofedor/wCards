@@ -19,15 +19,21 @@ import Combine
     self.name = name
     self.id = id
     self.sets = sets
-    print(description)
+//    print(description)
   }
   
-  func set(ID: UUID?) -> CardSet? {
+  func findSet(ID: UUID?) -> CardSet? {
     return sets.first(where: {$0.id == ID})
   }
   
-  func newSet() {
-    sets.append(CardSet(name: "", langID: self.id))
+  func setInd(ID: UUID?) -> Int {
+    return sets.firstIndex(where: {$0.id == ID}) ?? 0
+  }
+  
+  func newSet(_ n: Int = 1) {
+    let setOfCards = CardSet(name: "", langID: self.id, setOfCards: [])
+    setOfCards.newCard(n)
+    sets.append(setOfCards)
   }
   
   var description: String {

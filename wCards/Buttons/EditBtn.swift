@@ -13,11 +13,14 @@ struct EditBtn: View {
       Button(role: .confirm){ 
         value.toggle()
       } label: {
-        Image(systemName: "square.and.pencil")
-          .resizable()
-          .frame(width: 25, height: 25)
         if value {
-          Text("Edit...")
+          Text("Done")
+            .font(.system(size: 20))
+            .frame(width: 50, height: 25)
+        } else {
+            Image(systemName: "square.and.pencil")
+              .resizable()
+              .frame(width: 25, height: 25)
         }
       }
       .buttonBorderShape(value ? .capsule : .circle)
@@ -25,5 +28,5 @@ struct EditBtn: View {
 }
 
 #Preview {
-  EditBtn(value: .constant(false))
+  EditBtn(value: .constant(true))
 }

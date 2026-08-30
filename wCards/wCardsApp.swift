@@ -9,11 +9,11 @@ import SwiftUI
 
 @main
 struct wCardsApp: App {
-  @StateObject var allLangs: AllLanguages = AllLanguages()
-    var body: some Scene {
-        WindowGroup {
-            LangsSetsCards()
-        }
-        .environmentObject(allLangs)
+  @StateObject var dataLangs: DataLangs = DataLangs()
+  var body: some Scene {
+    WindowGroup {
+      LangsSetsCards()
     }
+    .environmentObject(dataLangs)
+  }
 }
