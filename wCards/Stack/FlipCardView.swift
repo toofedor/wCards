@@ -17,9 +17,13 @@ struct FlipCardView: View {
         BackCardView(isFlipped: card.flipped, isBackSideShown: cardManager.isBackSideShown, angle: cardManager.rotationAngle, word: card.translation, isOn: $card.pointed)
       }
       .onTapGesture {
-        cardManager.flipCardBouncy()
+        cardManager.flipCardBouncy(tapped: true)
         propect = true
         card.flipped.toggle()
+        Task {
+          try await Task.sleep(nanoseconds: 100)
+          propect = false
+        }
       }
       .onChange(of: card.flipped) { oldValue, newValue in
         if propect {

@@ -17,16 +17,20 @@ struct BackCardView: View {
     ZStack {
       RoundedRectangle(cornerRadius: 15)
         .fill(.white)
+        .strokeBorder(.green1.gradient.quaternary, lineWidth: 0.5)
       RoundedRectangle(cornerRadius: 15)
         .fill(.green.gradient.quaternary)
         .shadow(color: .green1.opacity(0.5), radius: 10, x: 0, y: 10)
         .overlay(
-          VStack(spacing: 20) {
-            Text(word)
-              .font(.title)
-              .foregroundStyle(.green1)
-              .multilineTextAlignment(.center)
-              .padding()
+          ZStack{
+            
+            VStack(spacing: 20) {
+              Text(word)
+                .font(.title)
+                .foregroundStyle(.green1)
+                .multilineTextAlignment(.center)
+                .padding()
+            }
           }
         )
       VStack(){

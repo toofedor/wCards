@@ -10,17 +10,20 @@ import SwiftUI
 
 struct LangsSetsCards: View {
   @EnvironmentObject var dataLangs: DataLangs
+  @EnvironmentObject var splitCopy: CopySplitManager
+  @Environment(\.colorScheme) private var colorScheme
   @State private var cardSet: CardSet = CardSet()
   @State private var showStack: Bool = false
   @State private var changingSet: Bool = false
   @State private var changingLang: Bool = false
   @State private var toggleList: Bool = false
-  @State var cardBuffer: [Card] = []
-  @State var setCutFrom: CardSet?
+  
+  @State private var normalIcon: UIImage?
+  @State private var slashedIcon: UIImage?
   var body: some View {
     
     ZStack {
-      NavigationSplitView { 
+      NavigationSplitView {
         VStack {
           List(selection: $dataLangs.allLangs.langID) {
             ForEach(dataLangs.allLangs.langs, id: \.id) { lang in
@@ -154,45 +157,7 @@ struct LangsSetsCards: View {
                 
                 Menu {
                   
-                  Button {
-                    set.setOfCards.forEach { $0.pointed = Bool.random() }
-                  } label: {
-                    HStack {
-                      Text("Check random")
-                      Image(systemName: "dice")
-                    }
-                  }
                   
-                  Button {
-                    set.setOfCards.forEach { $0.pointed.toggle() }
-                  } label: {
-                    Image(systemName: "arrow.left.arrow.right").rotationEffect(.degrees(90))
-                    Text("Invrse selection")
-                  }
-                  .buttonStyle(.glassProminent)
-                  .onLongPressGesture {
-                    set.setOfCards.forEach { $0.pointed.toggle() }
-                  }
-                  
-                  
-                  Button {
-                    set.setOfCards.forEach { $0.pointed = false }
-                  } label: {
-                    HStack {
-                      Text("Check all")
-                      Image(systemName: "checkmark.rectangle.fill")
-                    }
-                  }
-                  
-                  
-                  Button {
-                    set.setOfCards.forEach { $0.pointed = false }
-                  } label: {
-                    HStack {
-                      Text("Uncheck all")
-                      Image(systemName: "checkmark.rectangle")
-                    }
-                  }
                   
                 } label: {
                   ZStack {
@@ -272,9 +237,52 @@ struct LangsSetsCards: View {
               
               ToolbarItem(placement: .bottomBar) {
                 Menu {
+                  
                   Button {
-                    cardBuffer = set.setOfCards.filter { $0.pointed == true }
-                    setCutFrom = set
+                    set.setOfCards.forEach { $0.pointed = Bool.random() }
+                  } label: {
+                    HStack {
+                      Text("Check random")
+                      Image(systemName: "dice")
+                    }
+                  }
+                  
+                  
+                  Button {
+                    set.setOfCards.forEach { $0.pointed.toggle() }
+                  } label: {
+                    Image(systemName: "arrow.left.arrow.right").rotationEffect(.degrees(90))
+                    Text("Invrse selection")
+                  }
+                  .buttonStyle(.glassProminent)
+                  .onLongPressGesture {
+                    set.setOfCards.forEach { $0.pointed.toggle() }
+                  }
+                  
+                  
+                  Button {
+                    set.setOfCards.forEach { $0.pointed = false }
+                  } label: {
+                    HStack {
+                      Text("Check all")
+                      Image(systemName: "checkmark.rectangle.fill")
+                    }
+                  }
+                  
+                  
+                  Button {
+                    set.setOfCards.forEach { $0.pointed = false }
+                  } label: {
+                    HStack {
+                      Text("Uncheck all")
+                      Image(systemName: "checkmark.rectangle")
+                    }
+                  }
+                  
+                  
+                  Button {
+                    splitCopy.cardBuffer = set.setOfCards.filter { $0.pointed == true }
+                    splitCopy.setCutFrom = set
                   } label: {
                     Image(systemName: "tray.and.arrow.up")
                     Text("Cut from the list")
@@ -282,7 +290,7 @@ struct LangsSetsCards: View {
                   
                   
                   Button {
-                    cardBuffer = set.setOfCards.filter { $0.pointed == true }
+                    splitCopy.cardBuffer = set.setOfCards.filter { $0.pointed == true }
                   } label: {
                     Image(systemName: "rectangle.on.rectangle.dashed")
                     Text("Copy to a list")
@@ -290,15 +298,15 @@ struct LangsSetsCards: View {
                   
                   Button {
                     
-                    cardBuffer.forEach {
-                      if let setCutFrom {
-                        setCutFrom.removeCard($0)
+                    splitCopy.cardBuffer.forEach {
+                      if splitCopy.setCutFrom != nil {
+                        splitCopy.setCutFrom!.removeCard($0)
                       }
                       $0.id = UUID()
                       $0.setID = set.id
                       set.copyCard($0)
                     }
-                    setCutFrom = nil
+                    splitCopy.setCutFrom = nil
                     
                     dataLangs.saveTrigger()
                   } label: {
@@ -306,14 +314,27 @@ struct LangsSetsCards: View {
                     Text("Paste to the list")
                   }
                   
-                  Button {
-                    
+                  Button(role: .destructive) {
                     set.setOfCards.removeAll { $0.pointed }
-                    
                     dataLangs.saveTrigger()
                   } label: {
                     Image(systemName: "trash")
                     Text("Delete selected")
+                  }
+                  
+                  Button {
+                    splitCopy.setID = dataLangs.allLangs.setID
+                    splitCopy.langID = dataLangs.allLangs.langID
+                    splitCopy.showSplit.toggle()
+                  } label: {
+                    
+                    if let icon = splitCopy.showSplit ? slashedIcon : normalIcon {
+                      Image(uiImage: icon)
+                    } else {
+                      // Заглушка на время загрузки
+                      Image(systemName: "rectangle.split.2x1")
+                    }
+                    Text(splitCopy.showSplit ? "Usual mode" : "Split Edit Mode")
                   }
                   
                 } label: {
@@ -366,8 +387,27 @@ struct LangsSetsCards: View {
     .sheet(isPresented: $showStack) { 
       StackView(cardSet: $cardSet)
     }
+    .onAppear {
+      regenerateIcons()
+    }
+    .onChange(of: colorScheme) { _, _ in 
+        regenerateIcons()
+    }
     
   }
+  
+  private func regenerateIcons() {
+          normalIcon = renderRotatedIcon(
+              systemName: "rectangle.split.2x1",
+              rotation: 90,
+              colorScheme: colorScheme
+          )
+          slashedIcon = renderRotatedIcon(
+              systemName: "rectangle.split.2x1.slash",
+              rotation: 90,
+              colorScheme: colorScheme
+          )
+      }
   
   
   @ViewBuilder
@@ -445,10 +485,34 @@ struct LangsSetsCards: View {
   
 }
 
+@MainActor
+func renderRotatedIcon(systemName: String, rotation: Double, colorScheme: ColorScheme) -> UIImage? {
+    let view = RotatedIconView(systemName: systemName, rotation: rotation)
+        .environment(\.colorScheme, colorScheme) // ← ключевая строка
+    let renderer = ImageRenderer(content: view)
+    renderer.scale = UIScreen.main.scale
+    return renderer.uiImage
+}
 
+struct RotatedIconView: View {
+    let systemName: String
+    let rotation: Double
+
+    var body: some View {
+        Image(systemName: systemName)
+            .resizable()
+            .scaledToFit()
+            .foregroundStyle(.whiteBlack)
+            .colorInvert()
+            .frame(width: 18, height: 18)
+            .rotationEffect(.degrees(rotation))
+    }
+}
 
 #Preview("Main") {
   @Previewable @StateObject var dataLangs = DataLangs()
-    LangsSetsCards()
+  @Previewable @StateObject  var splitCopy: CopySplitManager = CopySplitManager()
+  LangsSetsCards()
     .environmentObject(dataLangs)
+    .environmentObject(splitCopy)
 }

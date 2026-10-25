@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C4516715308C462F006DBE49 /* SplitScreens.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4516714308C462F006DBE49 /* SplitScreens.swift */; };
+		C4516717308C473E006DBE49 /* LangsSetsCards2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4516716308C473E006DBE49 /* LangsSetsCards2.swift */; };
 		C45C56013037CF650005B3D9 /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45C56003037CF650005B3D9 /* StackView.swift */; };
 		C45C56033037ED050005B3D9 /* EditBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45C56023037ED050005B3D9 /* EditBtn.swift */; };
 		C45C56053037F2650005B3D9 /* WordInListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45C56043037F2650005B3D9 /* WordInListView.swift */; };
@@ -25,9 +27,12 @@
 		C4B85CF5303715EE0001B11E /* BackCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B85CF4303715EE0001B11E /* BackCardView.swift */; };
 		C4B85CF7303715FB0001B11E /* FrontCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B85CF6303715FB0001B11E /* FrontCardView.swift */; };
 		C4B85CF930371B780001B11E /* FlipCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B85CF830371B780001B11E /* FlipCardView.swift */; };
+		C4EDED4E308D5923002E6457 /* CopySplitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4EDED4D308D5923002E6457 /* CopySplitManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C4516714308C462F006DBE49 /* SplitScreens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitScreens.swift; sourceTree = "<group>"; };
+		C4516716308C473E006DBE49 /* LangsSetsCards2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LangsSetsCards2.swift; sourceTree = "<group>"; };
 		C45C56003037CF650005B3D9 /* StackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
 		C45C56023037ED050005B3D9 /* EditBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBtn.swift; sourceTree = "<group>"; };
 		C45C56043037F2650005B3D9 /* WordInListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordInListView.swift; sourceTree = "<group>"; };
@@ -47,6 +52,7 @@
 		C4B85CF4303715EE0001B11E /* BackCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackCardView.swift; sourceTree = "<group>"; };
 		C4B85CF6303715FB0001B11E /* FrontCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrontCardView.swift; sourceTree = "<group>"; };
 		C4B85CF830371B780001B11E /* FlipCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipCardView.swift; sourceTree = "<group>"; };
+		C4EDED4D308D5923002E6457 /* CopySplitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopySplitManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,7 +87,9 @@
 			children = (
 				C4673111303528390077656F /* Assets.xcassets */,
 				C4673113303528390077656F /* wCardsApp.swift */,
+				C4516714308C462F006DBE49 /* SplitScreens.swift */,
 				C4673112303528390077656F /* LangsSetsCards.swift */,
+				C4516716308C473E006DBE49 /* LangsSetsCards2.swift */,
 				C4A6DCD3303FCC6100F89741 /* ListOfWords.swift */,
 				C45C561D3038135C0005B3D9 /* FieldCardSetView.swift */,
 				C45C56043037F2650005B3D9 /* WordInListView.swift */,
@@ -99,6 +107,7 @@
 				C467311A30352DEA0077656F /* CardSet.swift */,
 				C467311E30353DAD0077656F /* Language.swift */,
 				C467311C303533D90077656F /* AllLanguages.swift */,
+				C4EDED4D308D5923002E6457 /* CopySplitManager.swift */,
 				C45C561F303820790005B3D9 /* DataSaving.swift */,
 				C49542163043C12600D55BA3 /* UIImage ext.swift */,
 			);
@@ -199,6 +208,7 @@
 			files = (
 				C4673115303528390077656F /* LangsSetsCards.swift in Sources */,
 				C4B85CF5303715EE0001B11E /* BackCardView.swift in Sources */,
+				C4516717308C473E006DBE49 /* LangsSetsCards2.swift in Sources */,
 				C4B85CF3303713860001B11E /* CardManager.swift in Sources */,
 				C45C56013037CF650005B3D9 /* StackView.swift in Sources */,
 				C45C5620303820790005B3D9 /* DataSaving.swift in Sources */,
@@ -209,8 +219,10 @@
 				C467311D303533D90077656F /* AllLanguages.swift in Sources */,
 				C467311F30353DAD0077656F /* Language.swift in Sources */,
 				C49542173043C12600D55BA3 /* UIImage ext.swift in Sources */,
+				C4EDED4E308D5923002E6457 /* CopySplitManager.swift in Sources */,
 				C4B85CF7303715FB0001B11E /* FrontCardView.swift in Sources */,
 				C4A6DCD4303FCC6100F89741 /* ListOfWords.swift in Sources */,
+				C4516715308C462F006DBE49 /* SplitScreens.swift in Sources */,
 				C45C561E3038135C0005B3D9 /* FieldCardSetView.swift in Sources */,
 				C4673116303528390077656F /* wCardsApp.swift in Sources */,
 				C467311B30352DEA0077656F /* CardSet.swift in Sources */,
@@ -356,6 +368,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -388,6 +401,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

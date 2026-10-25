@@ -9,12 +9,14 @@ import SwiftUI
 
 struct StackView: View {
   @Binding var cardSet: CardSet
-
+  
   @State private var dragOffset: CGSize = .zero
+  @State private var lastOffset: CGSize = .zero
   @State private var topCardIndex: Int = 0
   @State private var len: Int = 1
   @State private var shiftFactor: Double = 1
-  var width: CGFloat = 350
+  @State private var animateLastCard: Bool = false
+  let width: CGFloat = 350
 
   var body: some View {
     ZStack {
@@ -23,6 +25,14 @@ struct StackView: View {
       }
       .padding()
       VStack{
+        Button {
+          swipeBack()
+        } label: {
+          Image(systemName: "arrow.uturn.backward")
+          Text("Swipe Back")
+        }
+        .buttonStyle(.glassProminent)
+        
         Spacer()
         HStack(alignment: .bottom) {
           Button {
@@ -46,7 +56,7 @@ struct StackView: View {
     .background {
       Text(cardSet.name)
         .lineLimit(1)
-        .font(.system(size: 1500 / Double(cardSet.name.count), weight: .black, design: .serif))
+        .font(.system(size: 1500 / Double(len), weight: .black, design: .serif))
         .foregroundStyle(.gray.gradient.quaternary)
         .frame(width: 2000, height: 1000)
         .rotationEffect(.degrees(-70))
@@ -55,9 +65,15 @@ struct StackView: View {
       len = cardSet.setOfCards.count
       shiftFactor = 0.2 + 3.5/Double(len)
     }
+    .gesture(
+      DragGesture(minimumDistance: 20)
+        .onEnded { value in
+            swipeBack()
+        }
+    )
   }
   
-  
+  // Face Up/Down
   func flipCards(direction: Direction) {
     let n = cardSet.setOfCards.count { $0.flipped == (direction == .up) }
     guard n != 0 else { return }
@@ -65,9 +81,9 @@ struct StackView: View {
     
     Task {
       do {
-        for card in [topCardIndex..<cardSet.setOfCards.count, 0..<topCardIndex].joined() {
-          if cardSet.setOfCards[card].flipped == (direction == .up)  {
-            cardSet.setOfCards[card].flipped.toggle()
+        for card in [topCardIndex..<len, 0..<topCardIndex].joined() {
+            cardSet.setOfCards[card].flipped = direction.isDown
+          if cardSet.setOfCards[card].flipped == direction.isDown  {
             try await Task.sleep(nanoseconds: nanoSec)
           }
         }
@@ -78,6 +94,8 @@ struct StackView: View {
   enum Direction {
     case up
     case down
+    var isUp: Bool { self == .up }
+    var isDown: Bool { self == .down }
   }
 
   @ViewBuilder
@@ -93,7 +111,7 @@ struct StackView: View {
         x: offsetFor(visualIndex: visualIndex, dragOffset: dragOffset.width),
         y: yOffsetFor(visualIndex: visualIndex)
       )
-      .zIndex(Double(cardSet.setOfCards.count - visualIndex))
+      .zIndex(Double(len - visualIndex))
       .rotationEffect(
         .degrees(rotationFor(visualIndex: visualIndex, progress: progress)),
         anchor: .bottom
@@ -109,36 +127,59 @@ struct StackView: View {
   }
 
   // MARK: - Helper functions for layout
-
+  // dragging
   private func offsetFor(visualIndex: Int, dragOffset: CGFloat) -> CGFloat {
-    visualIndex == 0 ? dragOffset : Double(visualIndex) * -20
+    if animateLastCard {
+      return visualIndex == len-1 ? dragOffset : Double(visualIndex) * -15
+    }
+    
+    return visualIndex == 0 ? dragOffset : Double(visualIndex) * -15
   }
 
   private func yOffsetFor(visualIndex: Int) -> CGFloat {
-    visualIndex == 0 ? 0 : Double(visualIndex) * 5
+    if animateLastCard {
+      return visualIndex == len-1 ? 0 : Double(visualIndex) * 5
+    }
+    return visualIndex == 0 ? 0 : Double(visualIndex) * 5
   }
 
+  // веер
   private func rotationFor(visualIndex: Int, progress: Double) -> Double {
-    visualIndex == 0 ? 0 : (Double(visualIndex) - progress) * 15.0 * shiftFactor
+    if animateLastCard {
+      return visualIndex == len-1 ? 0 : (Double(visualIndex) - progress) * 15.0 * shiftFactor
+    }
+    return visualIndex == 0 ? 0 : (Double(visualIndex) - progress) * 15.0 * shiftFactor
   }
 
+  // 
   private func scaleFor(visualIndex: Int, progress: Double) -> CGFloat {
+    
+      if animateLastCard {
+        return visualIndex == len-1 ? 1 : 1.0 - Double(visualIndex) * 0.06 * (shiftFactor + 0.3)
+      }
     switch visualIndex {
     case 0:
       return 1
-    case 1:
-      return 1.0 - (Double(visualIndex) + progress) * 0.06
     default:
       return 1.0 - Double(visualIndex) * 0.06 * (shiftFactor + 0.3)
     }
   }
 
   private func offsetXBackFor(visualIndex: Int) -> CGFloat {
-    visualIndex == 0 ? 0 : Double(visualIndex) * 10 * shiftFactor
+    if animateLastCard {
+      return visualIndex == len-1 ? 0 : Double(visualIndex) * 10 * shiftFactor
+    }
+    return visualIndex == 0 ? 0 : Double(visualIndex) * 10 * shiftFactor
   }
 
   private func rotation3DFor(visualIndex: Int, signedProgress: Double) -> Double {
-    20.0 * signedProgress * (1.0 - (Double(visualIndex) + signedProgress) * 0.1) 
+    
+      if animateLastCard {
+        return visualIndex == len-1 
+        ? -20.0 * signedProgress * (1.0 - (Double(visualIndex) + signedProgress) * 0.1) 
+        : 20.0 * signedProgress * (1.0 - (Double(visualIndex) + signedProgress) * 0.1)
+      }
+    return 20.0 * signedProgress * (1.0 - (Double(visualIndex) + signedProgress) * 0.1)
   }
 
   // MARK: - Gesture
@@ -161,15 +202,32 @@ struct StackView: View {
       let delay: Double = direction == -1 ? 0.18 : 0.20
 
       withAnimation(.smooth(duration: delay)) {
-        dragOffset.width = direction < 0 ? -width * 1.15 : width
+        dragOffset.width = direction < 0 ? width * -1.15 : width
       } completion: {
         withAnimation(.smooth(duration: 0.5)) {
-          topCardIndex = (topCardIndex + 1) % cardSet.setOfCards.count
+          topCardIndex = (topCardIndex + 1) % len
           dragOffset = .zero
         }
       }
     } else {
       withAnimation {
+        dragOffset = .zero
+      }
+    }
+  }
+  
+  func swipeBack() {
+    
+    animateLastCard = true
+    
+    let delay: Double = 0.18
+
+    withAnimation(.smooth(duration: delay)) {
+      dragOffset.width = width * 1.15
+    } completion: {
+      topCardIndex = (topCardIndex - 1 + len) % len
+      animateLastCard = false
+      withAnimation(.smooth(duration: 0.5)) {
         dragOffset = .zero
       }
     }
@@ -180,12 +238,12 @@ struct StackView: View {
   @Previewable @State var stack = CardSet(
     name: "Местоимения", setOfCards: [
       Card(word: "Cat", translation: "Кот"), 
-      Card(word: "Dog", translation: "Собака"),
+      Card(word: "Dog", translation: "Собака", pointed: false),
       Card(word: "Mouse", translation: "Мышь"),
       Card(word: "Bat", translation: "Летучая мышь"),
       Card(word: "Snake", translation: "Змея")
       ,
-      Card(word: "Cat", translation: "Кот"), 
+      Card(word: "Cat", translation: "Кот", pointed: false), 
       Card(word: "Dog", translation: "Собака"),
       Card(word: "Mouse", translation: "Мышь"),
       Card(word: "Bat", translation: "Летучая мышь"),

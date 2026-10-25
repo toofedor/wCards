@@ -17,6 +17,7 @@ struct FrontCardView: View {
     ZStack {
       RoundedRectangle(cornerRadius: 15)
         .fill(.white)
+        .strokeBorder(.blue1.gradient.quaternary, lineWidth: 0.5)
       RoundedRectangle(cornerRadius: 15)
         .fill(.blue.gradient.quaternary)
         .shadow(color: .blue1.opacity(0.5), radius: 10, x: 0, y: 10)
