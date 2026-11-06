@@ -9,10 +9,11 @@ import Observation
 import Combine
 
 @Observable class CopySplitManager: ObservableObject {
-  
+  var isDeleting: Bool = false
   var showSplit: Bool = false
   var cardBuffer: [Card] = []
   var setCutFrom: CardSet?
+  var setForDeleting: CardSet?
   
   var langID: Language.ID?
   var setID: CardSet.ID?

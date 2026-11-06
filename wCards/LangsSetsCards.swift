@@ -315,8 +315,10 @@ struct LangsSetsCards: View {
                   }
                   
                   Button(role: .destructive) {
-                    set.setOfCards.removeAll { $0.pointed }
-                    dataLangs.saveTrigger()
+                    splitCopy.setForDeleting = set
+                    if splitCopy.setForDeleting!.setOfCards.count { $0.pointed } != 0 {
+                      splitCopy.isDeleting.toggle()
+                    } 
                   } label: {
                     Image(systemName: "trash")
                     Text("Delete selected")
@@ -393,7 +395,20 @@ struct LangsSetsCards: View {
     .onChange(of: colorScheme) { _, _ in 
         regenerateIcons()
     }
-    
+    .alert("Deleting word-words", isPresented: $splitCopy.isDeleting) { 
+      Button(role: .destructive) {
+        deleteAllPointed()
+      }
+    } message: {
+      Text("You're gonna delete \(splitCopy.setForDeleting?.setOfCards.count { $0.pointed } ?? 0) word-cards?")
+    }
+  }
+  
+  private func deleteAllPointed() {
+    if splitCopy.setForDeleting != nil {
+      splitCopy.setForDeleting!.setOfCards.removeAll { $0.pointed }
+      dataLangs.saveTrigger()
+    }
   }
   
   private func regenerateIcons() {

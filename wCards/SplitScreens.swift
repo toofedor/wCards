@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SplitScreens: View {
+  @EnvironmentObject var dataLangs: DataLangs
   @EnvironmentObject var splitCopy: CopySplitManager
   @Environment(\.colorScheme) private var colorScheme
   let screenHeight = UIScreen.main.bounds.height
@@ -47,7 +48,9 @@ struct SplitScreens: View {
     .background(.blackWhite)
     .animation(.bouncy, value: splitCopy.showSplit)
     
+
   }
+  
   
   private var dragGesture: some Gesture {
     DragGesture(minimumDistance: 0)
